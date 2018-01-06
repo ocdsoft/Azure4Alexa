@@ -41,6 +41,11 @@ namespace Azure4Alexa.Sycamore.Data
            
         }
 
+        public async Task<List<MissingAssignment>> GetMissingAssingments(int studentID)
+        {
+            return await GetJsonResult<List<MissingAssignment>>(string.Format(Url.Missing,studentID));
+        }
+
         private async Task<T> GetJsonResult<T>(string url) where T : new()
         {
             string httpResultString = string.Empty;

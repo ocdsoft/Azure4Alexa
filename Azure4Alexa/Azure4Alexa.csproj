@@ -132,6 +132,7 @@
     <Compile Include="Sycamore\Intents\MissingAssignments.cs" />
     <Compile Include="Sycamore\Interfaces\IRepository.cs" />
     <Compile Include="Sycamore\Models\Me.cs" />
+    <Compile Include="Sycamore\Models\MissingAssignment.cs" />
     <Compile Include="Sycamore\Models\Student.cs" />
     <Compile Include="Sycamore\Models\StudentBase.cs" />
     <Compile Include="Tfl\Status.cs" />
