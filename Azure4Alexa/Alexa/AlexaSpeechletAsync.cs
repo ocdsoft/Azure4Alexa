@@ -9,6 +9,7 @@ using AlexaSkillsKit.Json;
 using System.Threading.Tasks;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using Azure4Alexa.Sycamore.Intents;
 
 namespace Azure4Alexa.Alexa
 {
@@ -138,6 +139,11 @@ namespace Azure4Alexa.Alexa
 
                 case ("TflStatusIntent"):
                     return await Tfl.Status.GetResults(session, httpClient);
+
+                case ("MissingAssignmentsIntent"):
+                    {
+                        return await MissingAssignments.GetResults(session, intent);
+                    }
                 //return Task.FromResult<SpeechletResponse>(Tfl.Status.GetResults(session, httpClient));
 
                 // Advanced: call the Outlook API and read the number of unread emails and subject and sender of the first five
