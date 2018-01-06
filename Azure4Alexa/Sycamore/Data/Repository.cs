@@ -27,37 +27,37 @@ namespace Azure4Alexa.Sycamore.Data
         }
 
         public async Task<Me> GetMe()
-        {
-            var json = await GetJsonResult(Url.Me);
-            return JsonConvert.DeserializeObject<Me>(json);
+        {            
+            return await GetJsonResult<Me>(Url.Me);
         }
 
         public async Task<Student> GetStudent(int familyID, string studentFirstName)
         {
-            var json = await GetJsonResult(string.Format(Url.Students, familyID));
-            var students = JsonConvert.DeserializeObject<List<StudentBase>>(json);           
+            var students = await GetJsonResult<List<StudentBase>>(string.Format(Url.Students, familyID));
 
             var studentBase = students.FirstOrDefault(s => s.FirstName == studentFirstName);
-            json = await GetJsonResult(string.Format(Url.Student, studentBase.ID));
 
-            var student = JsonConvert.DeserializeObject<Student>(json);
-
-            return student;
+            return await GetJsonResult<Student>(string.Format(Url.Student, studentBase.ID));         
+           
         }
 
-        private async Task<string> GetJsonResult(string url)
+        private async Task<T> GetJsonResult<T>(string url) where T : new()
         {
+            string httpResultString = string.Empty;
+
             _httpClient.DefaultRequestHeaders.Clear();
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _session.User.AccessToken);
-            string httpResultString = string.Empty;
+
             var httpResponseMessage = await _httpClient.GetAsync(url);
+
             if (httpResponseMessage.IsSuccessStatusCode)
             {                
                 httpResultString = await httpResponseMessage.Content.ReadAsStringAsync();                
             }
 
             httpResponseMessage.Dispose();
-            return httpResultString;
+
+            return JsonConvert.DeserializeObject<T>(httpResultString); 
         }
     }
 }
