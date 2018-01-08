@@ -2,7 +2,10 @@
 using AlexaSkillsKit.UI;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Configuration;
@@ -55,9 +58,51 @@ namespace Azure4Alexa.Alexa
         {
             // remove characters that will cause SSML to break.
             // probably a whole lot of other characters to remove or sanitize.  This is just a lazy start.
-            return "<speak> " + spokenText.Replace("&", "and") + " </speak>";
+            return $"<speak>{ScrubHtml(spokenText)}</speak>";
 
         }
+
+        public static string AddSpeakTags(string spokenText)
+        {
+            // remove characters that will cause SSML to break.
+            // probably a whole lot of other characters to remove or sanitize.  This is just a lazy start.
+            return $"<speak>{spokenText}</speak>";
+
+        }
+
+        public static string AddSentenceTagsAndClean(string spokenText)
+        {
+            // remove characters that will cause SSML to break.
+            // probably a whole lot of other characters to remove or sanitize.  This is just a lazy start.
+            return $"<s>{ScrubHtml(spokenText)}</s>";
+
+        }
+
+        public static string AddSentenceTags(string spokenText)
+        {
+            // remove characters that will cause SSML to break.
+            // probably a whole lot of other characters to remove or sanitize.  This is just a lazy start.
+            return $"<s>{spokenText}</s>";
+
+        }
+
+        public static string AddSayAsTags(string spokenText, string interpretAs, string format = null)
+        {
+            // remove characters that will cause SSML to break.
+            // probably a whole lot of other characters to remove or sanitize.  This is just a lazy start.
+            string formatAttribute = (format != null) ? $" format='{format}' " : "";
+            return $"<say-as interpret-as='{interpretAs}'{formatAttribute}>{spokenText}</say-as>";
+        }
+
+        public static string ScrubHtml(string value)
+        {
+            var step1 = Regex.Replace(value, @"<[^>]+>|&nbsp;", "").Trim();
+            var step2 = Regex.Replace(step1, @"\s{2,}", " ");
+            return step2;
+        }
+
+            
+
 
         public static SpeechletResponse BuildSpeechletResponse(SimpleIntentResponse simpleIntentResponse, bool shouldEndSession)
         {
@@ -188,8 +233,11 @@ namespace Azure4Alexa.Alexa
 
                 card.Image = new Image()
                 {
-                    LargeImageUrl = "https://" + System.Web.HttpContext.Current.Request.Url.Host + "/api/alexaimages/" + simpleIntentResponse.largeImage + "/",
-                    SmallImageUrl = "https://" + System.Web.HttpContext.Current.Request.Url.Host + "/api/alexaimages/" + simpleIntentResponse.smallImage + "/",
+                    //LargeImageUrl = "https://" + System.Web.HttpContext.Current.Request.Url.Host + "/api/alexaimages/" + simpleIntentResponse.largeImage + "/",
+                    //SmallImageUrl = "https://" + System.Web.HttpContext.Current.Request.Url.Host + "/api/alexaimages/" + simpleIntentResponse.smallImage + "/",
+                    LargeImageUrl = simpleIntentResponse.largeImage,
+                    SmallImageUrl = simpleIntentResponse.smallImage
+                    
                 };
 
                 response.Card = card;

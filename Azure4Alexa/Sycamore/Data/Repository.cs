@@ -22,8 +22,7 @@ namespace Azure4Alexa.Sycamore.Data
         public Repository(Session session)
         {
             _session = session;            
-            _httpClient = new HttpClient();
-            _httpClient.BaseAddress = new Uri(Url.SycamoreBaseUrl);
+            _httpClient = new HttpClient();           
         }
 
         public async Task<Me> GetMe()
@@ -36,14 +35,16 @@ namespace Azure4Alexa.Sycamore.Data
             var students = await GetJsonResult<List<StudentBase>>(string.Format(Url.Students, familyID));
 
             var studentBase = students.FirstOrDefault(s => s.FirstName == studentFirstName);
-
-            return await GetJsonResult<Student>(string.Format(Url.Student, studentBase.ID));         
+            var student = await GetJsonResult<Student>(string.Format(Url.Student, studentBase.ID));
+            student.ID = studentBase.ID;
+            return student;         
            
         }
 
-        public async Task<List<MissingAssignment>> GetMissingAssingments(int studentID)
+        public async Task<List<MissingAssignment>> GetMissingAssingments(int studentID, DateTime filterDate)
         {
-            return await GetJsonResult<List<MissingAssignment>>(string.Format(Url.Missing,studentID));
+            var ma = await GetJsonResult<List<MissingAssignment>>(string.Format(Url.Missing, studentID));
+            return (ma != null) ? ma.Where(m => Convert.ToDateTime(m.DueDate) >= filterDate).ToList() : ma;
         }
 
         private async Task<T> GetJsonResult<T>(string url) where T : new()
@@ -53,7 +54,7 @@ namespace Azure4Alexa.Sycamore.Data
             _httpClient.DefaultRequestHeaders.Clear();
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _session.User.AccessToken);
 
-            var httpResponseMessage = await _httpClient.GetAsync(url);
+            var httpResponseMessage = await _httpClient.GetAsync(Url.SycamoreBaseUrl + url);
 
             if (httpResponseMessage.IsSuccessStatusCode)
             {                

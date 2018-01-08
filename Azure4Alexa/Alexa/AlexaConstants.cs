@@ -29,4 +29,12 @@ namespace Azure4Alexa.Alexa
 
 
     }
+
+    public static class InterpretAs
+    {
+        public const string Interjection = "interjection";
+        public const string Date = "date";
+    }
+
+
 }
