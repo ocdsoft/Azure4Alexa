@@ -18,7 +18,7 @@ namespace Azure4Alexa.Sycamore.Intents
 {
     
 
-    public class MissingAssignments
+    public class HomeworkAssignments
     {
        
         
@@ -26,36 +26,36 @@ namespace Azure4Alexa.Sycamore.Intents
         {
             var repository = DataFactory.Create(session);
             var studentFirstName = intent.Slots["studentFirstName"]?.Value.ToProperCase();
-            string dateFilterString = intent.Slots["date"]?.Value;
-            DateTime dateFilter = (string.IsNullOrEmpty(dateFilterString)) ? DateTime.Now.AddDays(-7) : Convert.ToDateTime(dateFilterString);
+            string filterDateString = intent.Slots["dateFilter"]?.Value;
+            DateTime dateFilter = (string.IsNullOrEmpty(filterDateString)) ? DateTime.Now : Convert.ToDateTime(filterDateString);
 
             var me = await repository.GetMe();
             var student = await repository.GetStudent(me.FamilyID, studentFirstName);
-            var missingAssignments = await repository.GetMissingAssingments(student.ID, dateFilter);
+            var homeworkAssignments = await repository.GetHomeworkAssingments(student.ID, dateFilter);
             
-            return AlexaUtils.BuildSpeechletResponse(ParseResults(missingAssignments.ToList(),student,me), true);
+            return AlexaUtils.BuildSpeechletResponse(ParseResults(homeworkAssignments,student,me, dateFilter), true);
 
         }
 
-        private static AlexaUtils.SimpleIntentResponse ParseResults(List<MissingAssignment> missingAssignments, Student student, Me me)
+        private static AlexaUtils.SimpleIntentResponse ParseResults(List<HomeworkAssignment> homeworkAssignments, Student student, Me me, DateTime dateFilter)
         {
             StringBuilder spokenText = new StringBuilder();
-            int count = (missingAssignments == null) ? 0 : missingAssignments.Count;
+            int count = (homeworkAssignments == null) ? 0 : homeworkAssignments.Count;
 
             if (count > 0)
             {
                 string plural = (count > 1) ? "s" : "";
-                spokenText.Append(AlexaUtils.AddSentenceTags($"{student.FirstName} has {count} missing assignment{plural}"));
+                spokenText.Append(AlexaUtils.AddSentenceTags($"Yes, {student.FirstName} has {count} homework assignment{plural}"));
             }
             else
-            {
-                spokenText.Append(AlexaUtils.AddSentenceTags($"{student.FirstName} has no missing assignments"));
-                spokenText.Append(AlexaUtils.AddSentenceTags(AlexaUtils.AddSayAsTags($"Great job, {student.FirstName}", InterpretAs.Interjection)));
+            {                
+                spokenText.Append(AlexaUtils.AddSentenceTags($"{student.FirstName} has no homework due on {AlexaUtils.AddSayAsTags(Convert.ToDateTime(dateFilter).ToString("yyyyMMdd"), InterpretAs.Date, "mdy")}"));
+                spokenText.Append(AlexaUtils.AddSentenceTags(AlexaUtils.AddSayAsTags($"Yipee", InterpretAs.Interjection)));
             }
 
-            if (missingAssignments != null)
+            if (homeworkAssignments != null)
             {
-                foreach (var ma in missingAssignments)
+                foreach (var ma in homeworkAssignments)
                 {
                     spokenText.Append(AlexaUtils.AddSentenceTagsAndClean(ma.ClassName));
                     spokenText.Append(AlexaUtils.AddSentenceTagsAndClean(ma.Title));

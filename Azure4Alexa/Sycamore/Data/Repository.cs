@@ -41,10 +41,16 @@ namespace Azure4Alexa.Sycamore.Data
            
         }
 
-        public async Task<List<MissingAssignment>> GetMissingAssingments(int studentID, DateTime filterDate)
+        public async Task<List<MissingAssignment>> GetMissingAssingments(int studentID, DateTime dateFilter)
         {
             var ma = await GetJsonResult<List<MissingAssignment>>(string.Format(Url.Missing, studentID));
-            return (ma != null) ? ma.Where(m => Convert.ToDateTime(m.DueDate) >= filterDate).ToList() : ma;
+            return (ma != null) ? ma.Where(m => Convert.ToDateTime(m.DueDate) >= dateFilter).ToList() : ma;
+        }
+
+        public async Task<List<HomeworkAssignment>> GetHomeworkAssingments(int studentID, DateTime dateFilter)
+        {
+            var ha = await GetJsonResult<List<HomeworkAssignment>>(string.Format(Url.Homework, studentID));
+            return (ha != null) ? ha.Where(h => Convert.ToDateTime(h.DueDate) == dateFilter).ToList() : ha;
         }
 
         private async Task<T> GetJsonResult<T>(string url) where T : new()
@@ -57,13 +63,13 @@ namespace Azure4Alexa.Sycamore.Data
             var httpResponseMessage = await _httpClient.GetAsync(Url.SycamoreBaseUrl + url);
 
             if (httpResponseMessage.IsSuccessStatusCode)
-            {                
-                httpResultString = await httpResponseMessage.Content.ReadAsStringAsync();                
+            {
+                httpResultString = await httpResponseMessage.Content.ReadAsStringAsync();
             }
 
             httpResponseMessage.Dispose();
 
-            return JsonConvert.DeserializeObject<T>(httpResultString); 
+            return JsonConvert.DeserializeObject<T>(httpResultString);
         }
     }
 }

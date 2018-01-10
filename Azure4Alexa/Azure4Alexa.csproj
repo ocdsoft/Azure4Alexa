@@ -130,8 +130,10 @@
     <Compile Include="Sycamore\Constants\Url.cs" />
     <Compile Include="Sycamore\Data\DataFactory.cs" />
     <Compile Include="Sycamore\Data\Repository.cs" />
+    <Compile Include="Sycamore\Intents\HomeworkAssignments.cs" />
     <Compile Include="Sycamore\Intents\MissingAssignments.cs" />
     <Compile Include="Sycamore\Interfaces\IRepository.cs" />
+    <Compile Include="Sycamore\Models\HomeworkAssignment.cs" />
     <Compile Include="Sycamore\Models\Me.cs" />
     <Compile Include="Sycamore\Models\MissingAssignment.cs" />
     <Compile Include="Sycamore\Models\Student.cs" />
@@ -148,6 +150,9 @@
     <Content Include="Groove\Registration\AlexaIntentSchema.json" />
     <Content Include="Groove\README.md" />
     <None Include="Properties\PublishProfiles\azure4alexa - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\ocdsoft-alexa - Web Deploy.pubxml">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

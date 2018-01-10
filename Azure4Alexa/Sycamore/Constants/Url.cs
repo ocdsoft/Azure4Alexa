@@ -18,5 +18,7 @@ namespace Azure4Alexa.Sycamore.Constants
         // studentID
         public static string Missing = "/Student/{0}/Missing";
         public static string Logo = "https://app.sycamoreschool.com/images/ss_logo_red.png";
+        // studentID
+        public static string Homework = "/Student/{0}/Homework";
     }
 }

@@ -12,6 +12,7 @@ namespace Azure4Alexa.Sycamore.Interfaces
     {
         Task<Me> GetMe();
         Task<Student> GetStudent(int familyID, string studentFirstName);
-        Task<List<MissingAssignment>> GetMissingAssingments(int studentID, DateTime filterDate);
+        Task<List<MissingAssignment>> GetMissingAssingments(int studentID, DateTime dateFilter);
+        Task<List<HomeworkAssignment>> GetHomeworkAssingments(int studentID, DateTime dateFilter);
     }
 }
