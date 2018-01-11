@@ -11,6 +11,7 @@ using System.Net.Http.Headers;
 using Newtonsoft.Json;
 using AlexaSkillsKit.Slu;
 using Azure4Alexa.Sycamore.Constants;
+using Newtonsoft.Json.Linq;
 
 namespace Azure4Alexa.Sycamore.Data
 {
@@ -53,7 +54,15 @@ namespace Azure4Alexa.Sycamore.Data
             return (ha != null) ? ha.Where(h => Convert.ToDateTime(h.DueDate) == dateFilter).ToList() : ha;
         }
 
-        private async Task<T> GetJsonResult<T>(string url) where T : new()
+        public async Task<MenuItem> GetMenuItem(int schoolID, DateTime dateFilter)
+        {
+            var dateFormatted = dateFilter.ToString("yyyy-MM-dd");
+            // Requesting the same day so start and end date match
+            var menuItem = await GetJsonResult<MenuItem>(string.Format(Url.Menu, schoolID, dateFormatted), true);
+            return menuItem;
+        }
+
+        private async Task<T> GetJsonResult<T>(string url, bool removeInvalidRoot = false) where T : new()
         {
             string httpResultString = string.Empty;
 
@@ -65,6 +74,9 @@ namespace Azure4Alexa.Sycamore.Data
             if (httpResponseMessage.IsSuccessStatusCode)
             {
                 httpResultString = await httpResponseMessage.Content.ReadAsStringAsync();
+                if (removeInvalidRoot && !string.IsNullOrEmpty(httpResultString))
+                    httpResultString = httpResultString.Substring(httpResultString.IndexOf("[") + 1).TrimEnd('}', ']') + "}";
+               
             }
 
             httpResponseMessage.Dispose();

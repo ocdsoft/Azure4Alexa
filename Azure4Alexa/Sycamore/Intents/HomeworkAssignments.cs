@@ -49,8 +49,8 @@ namespace Azure4Alexa.Sycamore.Intents
             }
             else
             {                
-                spokenText.Append(AlexaUtils.AddSentenceTags($"{student.FirstName} has no homework due on {AlexaUtils.AddSayAsTags(Convert.ToDateTime(dateFilter).ToString("yyyyMMdd"), InterpretAs.Date, "mdy")}"));
-                spokenText.Append(AlexaUtils.AddSentenceTags(AlexaUtils.AddSayAsTags($"Yipee", InterpretAs.Interjection)));
+                spokenText.Append(AlexaUtils.AddSentenceTags($"{student.FirstName} has no homework due on {AlexaUtils.AddSayAsTags(dateFilter.ToString(AlexaConstants.DefaultDateFormat), InterpretAs.Date, "mdy")}"));
+                spokenText.Append(AlexaUtils.AddSentenceTags(AlexaUtils.AddSayAsTags($"<phoneme alphabet='x-sampa' ph='jIpi'>Yipee</phoneme>", InterpretAs.Interjection)));
             }
 
             if (homeworkAssignments != null)
@@ -60,7 +60,7 @@ namespace Azure4Alexa.Sycamore.Intents
                     spokenText.Append(AlexaUtils.AddSentenceTagsAndClean(ma.ClassName));
                     spokenText.Append(AlexaUtils.AddSentenceTagsAndClean(ma.Title));
                     spokenText.Append(AlexaUtils.AddSentenceTagsAndClean(ma.Description));
-                    spokenText.Append(AlexaUtils.AddSentenceTags("<emphasis level='strong'>Due date</emphasis> " + AlexaUtils.AddSayAsTags(Convert.ToDateTime(ma.DueDate).ToString("yyyyMMdd"), InterpretAs.Date, "mdy")));
+                    spokenText.Append(AlexaUtils.AddSentenceTags("<emphasis level='strong'>Due date</emphasis> " + AlexaUtils.AddSayAsTags(ma.DueDateFormatted, InterpretAs.Date, "mdy")));
                 }
             }
 

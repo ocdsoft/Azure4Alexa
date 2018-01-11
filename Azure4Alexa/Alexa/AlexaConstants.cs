@@ -27,6 +27,8 @@ namespace Azure4Alexa.Alexa
 
         public static string AppErrorMessage = "Sorry, something went wrong.  Please try again.";
 
+        public static string DefaultDateFormat = "yyyyMMdd";
+
 
     }
 

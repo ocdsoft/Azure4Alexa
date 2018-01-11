@@ -130,11 +130,14 @@
     <Compile Include="Sycamore\Constants\Url.cs" />
     <Compile Include="Sycamore\Data\DataFactory.cs" />
     <Compile Include="Sycamore\Data\Repository.cs" />
+    <Compile Include="Sycamore\Intents\Menu.cs" />
     <Compile Include="Sycamore\Intents\HomeworkAssignments.cs" />
     <Compile Include="Sycamore\Intents\MissingAssignments.cs" />
     <Compile Include="Sycamore\Interfaces\IRepository.cs" />
     <Compile Include="Sycamore\Models\HomeworkAssignment.cs" />
     <Compile Include="Sycamore\Models\Me.cs" />
+    <Compile Include="Sycamore\Models\MenuItem.cs" />
+    <Compile Include="Sycamore\Models\MenuResponse.cs" />
     <Compile Include="Sycamore\Models\MissingAssignment.cs" />
     <Compile Include="Sycamore\Models\Student.cs" />
     <Compile Include="Sycamore\Models\StudentBase.cs" />

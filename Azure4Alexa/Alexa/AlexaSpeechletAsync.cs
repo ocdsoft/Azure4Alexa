@@ -148,6 +148,10 @@ namespace Azure4Alexa.Alexa
                     {
                         return await HomeworkAssignments.GetResults(session, intent);
                     }
+                case ("MenuIntent"):
+                    {
+                        return await Menu.GetResults(session, intent);
+                    }
                 //return Task.FromResult<SpeechletResponse>(Tfl.Status.GetResults(session, httpClient));
 
                 // Advanced: call the Outlook API and read the number of unread emails and subject and sender of the first five
@@ -212,7 +216,7 @@ namespace Azure4Alexa.Alexa
             // called by OnLaunchAsync - when the user invokes your skill without an intent
             // called by OnIntentAsync if you forget to map an intent to an action
 
-            return AlexaUtils.BuildSpeechletResponse(new AlexaUtils.SimpleIntentResponse() { cardText = "Thanks for giving us a try" }, true);
+            return AlexaUtils.BuildSpeechletResponse(new AlexaUtils.SimpleIntentResponse() { cardText = "I didn't understand your request.  Please try again" }, true);
         }
 
 

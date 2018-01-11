@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Azure4Alexa.Alexa;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +30,14 @@ namespace Azure4Alexa.Sycamore.Models
 
         [JsonProperty("DueDate")]
         public string DueDate { get; set; }
+
+        public string DueDateFormatted
+        {
+            get
+            {
+                return Convert.ToDateTime(DueDate).ToString(AlexaConstants.DefaultDateFormat);
+            }
+        }
     }
 
 }

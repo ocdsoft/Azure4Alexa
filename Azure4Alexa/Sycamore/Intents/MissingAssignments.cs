@@ -60,7 +60,7 @@ namespace Azure4Alexa.Sycamore.Intents
                     spokenText.Append(AlexaUtils.AddSentenceTagsAndClean(ma.ClassName));
                     spokenText.Append(AlexaUtils.AddSentenceTagsAndClean(ma.Title));
                     spokenText.Append(AlexaUtils.AddSentenceTagsAndClean(ma.Description));
-                    spokenText.Append(AlexaUtils.AddSentenceTags("<emphasis level='strong'>Due date</emphasis> " + AlexaUtils.AddSayAsTags(Convert.ToDateTime(ma.DueDate).ToString("yyyyMMdd"), InterpretAs.Date, "mdy")));
+                    spokenText.Append(AlexaUtils.AddSentenceTags("<emphasis level='strong'>Due date</emphasis> " + AlexaUtils.AddSayAsTags(ma.DueDateFormatted, InterpretAs.Date, "mdy")));
                 }
             }
 
