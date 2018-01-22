@@ -22,5 +22,8 @@ namespace Azure4Alexa.Sycamore.Constants
         public static string Homework = "/Student/{0}/Homework";
         // schoolID, yyyy-MM-dd
         public static string Menu = "/School/{0}/Cafeteria?start={1}&end={1}";
+
+        // familyID
+        public static string AccountBalance = "/Family/{0}/Accounts";
     }
 }

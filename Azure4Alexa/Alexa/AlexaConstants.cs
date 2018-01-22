@@ -36,6 +36,7 @@ namespace Azure4Alexa.Alexa
     {
         public const string Interjection = "interjection";
         public const string Date = "date";
+        public const string Unit = "unit";
     }
 
 

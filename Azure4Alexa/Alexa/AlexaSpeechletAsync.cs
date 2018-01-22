@@ -152,6 +152,10 @@ namespace Azure4Alexa.Alexa
                     {
                         return await Menu.GetResults(session, intent);
                     }
+                case ("AccountBalanceIntent"):
+                    {
+                        return await AccountBalance.GetResults(session, intent);
+                    }
                 //return Task.FromResult<SpeechletResponse>(Tfl.Status.GetResults(session, httpClient));
 
                 // Advanced: call the Outlook API and read the number of unread emails and subject and sender of the first five
