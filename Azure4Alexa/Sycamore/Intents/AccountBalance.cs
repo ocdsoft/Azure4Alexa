@@ -60,7 +60,7 @@ namespace Azure4Alexa.Sycamore.Intents
         private static string ParseAlias(string accountName)
         {
             string[] cafeteriaAliases = { "hot lunch", "lunch" };
-            string[] childcareAliases = { "before school care", "after school care" };
+            string[] childcareAliases = { "before school care", "after school care", "child care" };
             
             if (cafeteriaAliases.Contains(accountName))
             {
