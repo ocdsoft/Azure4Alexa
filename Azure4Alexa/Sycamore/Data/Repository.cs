@@ -65,7 +65,7 @@ namespace Azure4Alexa.Sycamore.Data
         public async Task<Account> GetAccount(int familyID, string accountName)
         {          
             // Requesting the same day so start and end date match
-            var accounts = await GetJsonResult<List<Account>>(string.Format(Url.AccountBalance, familyID), true);
+            var accounts = await GetJsonResult<List<Account>>(string.Format(Url.AccountBalance, familyID));
             return accounts.FirstOrDefault(a => a.ID == accountName);
         }
 

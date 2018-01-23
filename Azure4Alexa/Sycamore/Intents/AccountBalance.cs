@@ -25,13 +25,12 @@ namespace Azure4Alexa.Sycamore.Intents
         public static async Task<SpeechletResponse> GetResults(Session session, Intent intent)        
         {
             var repository = DataFactory.Create(session);
-            string accountNameFilter = intent.Slots["accountName"]?.Value;
-            
+            string accountNameFilter = ParseAlias(intent.Slots["accountName"]?.Value);         
 
             var me = await repository.GetMe();
             var account = await repository.GetAccount(me.FamilyID, accountNameFilter);
             
-            return AlexaUtils.BuildSpeechletResponse(ParseResults(account, accountNameFilter), true);
+            return AlexaUtils.BuildSpeechletResponse(ParseResults(account, accountNameFilter),true);
 
         }
 
@@ -49,13 +48,32 @@ namespace Azure4Alexa.Sycamore.Intents
             }
             else
             {
-                spokenText.Append(AlexaUtils.AddSentenceTags($"The balance on your {account.Name} account is ${AlexaUtils.AddSayAsTags(account.Amount, InterpretAs.Date)}"));                             
+                spokenText.Append(AlexaUtils.AddSentenceTags($"The balance on your {account.Name} account is {AlexaUtils.AddSayAsTags("$" + account.Amount, InterpretAs.Unit)}"));                             
             }
 
             return new AlexaUtils.SimpleIntentResponse()
             {
                 ssmlString = AlexaUtils.AddSpeakTags(spokenText.ToString())                
             };
+        }
+
+        private static string ParseAlias(string accountName)
+        {
+            string[] cafeteriaAliases = { "hot lunch", "lunch" };
+            string[] childcareAliases = { "before school care", "after school care" };
+            
+            if (cafeteriaAliases.Contains(accountName))
+            {
+                return "cafeteria";
+            }
+            else if (childcareAliases.Contains(accountName))
+            {
+                return "childcare";
+            }
+            else
+            {
+                return accountName;
+            }            
         }
     }
 }
